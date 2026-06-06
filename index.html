@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍅 番茄钟 Pomodoro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <h1 class="title">🍅 番茄钟</h1>
+
+    <!-- 模式切换 -->
+    <div class="modes">
+      <button class="mode-btn active" data-mode="focus">专注</button>
+      <button class="mode-btn" data-mode="short">短休息</button>
+      <button class="mode-btn" data-mode="long">长休息</button>
+    </div>
+
+    <!-- 倒计时显示 -->
+    <div class="timer" id="timer">25:00</div>
+    <p class="status" id="status">准备开始专注 ✨</p>
+
+    <!-- 任务输入框 -->
+    <input
+      type="text"
+      id="task"
+      class="task-input"
+      placeholder="✏️ 当前任务是…"
+      maxlength="40"
+    >
+
+    <!-- 控制按钮 -->
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn">开始</button>
+      <button class="btn btn-ghost" id="pauseBtn">暂停</button>
+      <button class="btn btn-ghost" id="resetBtn">重置</button>
+    </div>
+
+    <!-- 已完成番茄钟统计 -->
+    <div class="count">
+      已完成番茄钟：<span id="count">0</span> 🍅
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

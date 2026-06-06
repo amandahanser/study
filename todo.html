@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#4f46e5">
+<title>待办清单</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f3f4f6;
+    color: #1f2937;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    
+  }
+  .app {
+    width: 100%;
+    max-width: 480px;
+    background: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: #4f46e5;
+    color: #fff;
+    padding: 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 20px; font-weight: 600; }
+  header .count { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .input-bar {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 78px;
+    background: #fff;
+    z-index: 9;
+  }
+  .input-bar input {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 16px;
+    outline: none;
+  }
+  .input-bar input:focus { border-color: #4f46e5; }
+  .input-bar button {
+    border: none;
+    background: #4f46e5;
+    color: #fff;
+    border-radius: 10px;
+    padding: 0 18px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .input-bar button:active { background: #4338ca; }
+  ul { list-style: none; flex: 1; padding: 8px 0 24px; }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f1f4;
+  }
+  .check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #cbd5e1;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  li.done .check { background: #4f46e5; border-color: #4f46e5; }
+  .check svg { width: 14px; height: 14px; stroke: #fff; opacity: 0; }
+  li.done .check svg { opacity: 1; }
+  .text { flex: 1; font-size: 16px; word-break: break-word; }
+  li.done .text { text-decoration: line-through; color: #9ca3af; }
+  .del {
+    border: none;
+    background: none;
+    color: #d1d5db;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+  }
+  .del:active { color: #ef4444; }
+  .empty {
+    text-align: center;
+    color: #9ca3af;
+    padding: 60px 16px;
+    font-size: 15px;
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>待办清单</h1>
+      <div class="count" id="count">还没有任务</div>
+    </header>
+    <div class="input-bar">
+      <input id="input" type="text" placeholder="添加新任务…" autocomplete="off">
+      <button id="add">添加</button>
+    </div>
+    <ul id="list"></ul>
+  </div>
+
+<script>
+  const KEY = 'todo.items';
+  const listEl = document.getElementById('list');
+  const inputEl = document.getElementById('input');
+  const countEl = document.getElementById('count');
+
+  let items = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+  function save() {
+    localStorage.setItem(KEY, JSON.stringify(items));
+  }
+
+  function render() {
+    listEl.innerHTML = '';
+    if (items.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'empty';
+      li.textContent = '点击上方「添加」开始吧 ✨';
+      listEl.appendChild(li);
+    } else {
+      items.forEach((item, i) => {
+        const li = document.createElement('li');
+        if (item.done) li.classList.add('done');
+        li.innerHTML = `
+          <span class="check">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </span>
+          <span class="text"></span>
+          <button class="del" aria-label="删除">×</button>`;
+        li.querySelector('.text').textContent = item.text;
+        li.querySelector('.check').onclick = () => toggle(i);
+        li.querySelector('.del').onclick = () => remove(i);
+        listEl.appendChild(li);
+      });
+    }
+    const left = items.filter(t => !t.done).length;
+    countEl.textContent = items.length ? `${left} 个未完成 / 共 ${items.length} 个` : '还没有任务';
+  }
+
+  function add() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    items.unshift({ text, done: false });
+    inputEl.value = '';
+    save(); render();
+  }
+
+  function toggle(i) { items[i].done = !items[i].done; save(); render(); }
+  function remove(i) { items.splice(i, 1); save(); render(); }
+
+  document.getElementById('add').onclick = add;
+  inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') add(); });
+
+  render();
+</script>
+</body>
+</html>

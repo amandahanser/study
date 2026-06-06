@@ -1,0 +1,190 @@
+/* ===== 基础重置 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --tomato: #ff6347;
+  --tomato-dark: #e74c3c;
+  --pink: #ffe3e0;
+  --pink-soft: #fff5f4;
+  --text: #5a4a47;
+  --shadow: 0 12px 30px rgba(231, 76, 60, 0.18);
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  /* 渐变背景 */
+  background: linear-gradient(135deg, #ffd2cf 0%, #ffb3a7 50%, #ff8e7d 100%);
+  color: var(--text);
+}
+
+/* ===== 卡片布局 ===== */
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 32px;
+  padding: 36px 28px 32px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.title {
+  font-size: 28px;
+  color: var(--tomato-dark);
+  margin-bottom: 22px;
+  letter-spacing: 1px;
+}
+
+/* ===== 模式切换 ===== */
+.modes {
+  display: flex;
+  gap: 8px;
+  background: var(--pink-soft);
+  padding: 6px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+}
+
+.mode-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 0;
+  border-radius: 999px;
+  font-size: 15px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 600;
+}
+
+.mode-btn:hover {
+  background: var(--pink);
+}
+
+.mode-btn.active {
+  background: var(--tomato);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.4);
+}
+
+/* ===== 倒计时 ===== */
+.timer {
+  font-size: 84px;
+  font-weight: 800;
+  color: var(--tomato-dark);
+  line-height: 1;
+  margin: 10px 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+}
+
+.status {
+  font-size: 15px;
+  color: #b08e8a;
+  margin-bottom: 24px;
+  min-height: 20px;
+}
+
+/* ===== 任务输入框 ===== */
+.task-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--pink);
+  border-radius: 16px;
+  font-size: 15px;
+  color: var(--text);
+  outline: none;
+  margin-bottom: 24px;
+  transition: border-color 0.25s ease;
+  background: var(--pink-soft);
+}
+
+.task-input:focus {
+  border-color: var(--tomato);
+  background: #fff;
+}
+
+.task-input::placeholder {
+  color: #c9a7a3;
+}
+
+/* ===== 控制按钮 ===== */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.btn {
+  flex: 1;
+  border: none;
+  padding: 14px 0;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-primary {
+  background: var(--tomato);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(255, 99, 71, 0.4);
+}
+
+.btn-primary:hover {
+  background: var(--tomato-dark);
+  box-shadow: 0 10px 22px rgba(231, 76, 60, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: var(--pink);
+  color: var(--tomato-dark);
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.15);
+}
+
+.btn-ghost:hover {
+  background: #ffd2cf;
+  transform: translateY(-2px);
+}
+
+/* ===== 统计 ===== */
+.count {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.count span {
+  color: var(--tomato-dark);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 420px) {
+  .card { padding: 28px 20px; }
+  .timer { font-size: 68px; }
+  .title { font-size: 24px; }
+}
